@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">MarvelHeroes</string>
     <string name="action_settings">Settings</string>
+    <string name="search_hint">Procure por um personagem!</string>
+
+    <!-->Loading Dialog<-->
+    <string name="loading">Carregando</string>
+    <string name="wait_while_loading">Aguarde enquanto os filmes são carregados…</string>
 </resources>
