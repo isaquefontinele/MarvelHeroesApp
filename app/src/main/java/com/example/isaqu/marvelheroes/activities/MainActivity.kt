@@ -1,6 +1,7 @@
 package com.example.isaqu.marvelheroes.activities
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
@@ -8,12 +9,14 @@ import android.view.MenuItem
 import com.example.isaqu.marvelheroes.R
 import com.example.isaqu.marvelheroes.data.MarvelApi
 import com.example.isaqu.marvelheroes.model.Character
+import com.example.isaqu.marvelheroes.utils.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.Serializable
 import java.util.*
 
 class MainActivity : BaseActivity() {
@@ -41,7 +44,13 @@ class MainActivity : BaseActivity() {
     private fun setupFields() {
         mCharacters = ArrayList<Character>()
         progressDialog = ProgressDialog(this)
-        mAdapter = CharactersAdapter(this, mCharacters)
+        mAdapter = CharactersAdapter(mCharacters) {
+            //OnClick on card
+            val intent = Intent(this, CharacterDetailActivity::class.java)
+            intent.putExtra(Constants.CHARACTER_DATA, mCharacters[it] as Serializable)
+            startActivity(intent)
+        }
+
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.adapter = mAdapter
 

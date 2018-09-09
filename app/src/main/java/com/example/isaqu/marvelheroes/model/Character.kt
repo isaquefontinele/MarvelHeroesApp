@@ -1,9 +1,10 @@
 package com.example.isaqu.marvelheroes.model
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 import java.util.*
 
-class Character {
+class Character : Serializable {
 
     @Json(name = "id")
     var id: Int? = null
@@ -15,21 +16,23 @@ class Character {
     var modified: String? = null
     @Json(name = "resourceURI")
     var resourceURI: String? = null
+    @Json(name = "thumbnail")
+    var thumbnail: Thumbnail? = null
     @Json(name = "urls")
     var urls: List<Url> = ArrayList<Url>()
 
 
-    class Url {
+    class Url : Serializable {
         @Json(name = "type")
         var type: String? = null
         @Json(name = "url")
         var url: String? = null
     }
 
-//    class Stories {
-//        private var available: Int? = null
-//        private var collectionURI: String? = null
-//        private var items: List<Item__> = ArrayList<Item__>()
-//        private var returned: Int? = null
-//    }
+    class Thumbnail : Serializable {
+        @Json(name = "path")
+        var path: String? = null
+        @Json(name = "extension")
+        var extension: String? = null
+    }
 }
