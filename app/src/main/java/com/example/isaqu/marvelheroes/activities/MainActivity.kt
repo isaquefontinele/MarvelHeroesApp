@@ -18,15 +18,15 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.Serializable
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var api: MarvelApi
-    private lateinit var mCharacters: List<Character>
+    private lateinit var mCharacters: ArrayList<Character>
     private lateinit var mAdapter: CharactersAdapter
     private lateinit var progressDialog: ProgressDialog
+    private var skip: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +55,24 @@ class MainActivity : AppCompatActivity() {
 
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.adapter = mAdapter
+
+        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!isLoading()) {
+                    if (!recyclerView!!.canScrollVertically(1)) {
+                        loadCharacters()
+
+                    }
+                }
+            }
+        })
     }
 
     private fun loadCharacters() {
+
         api = Retrofit.Builder()
-                .baseUrl(MarvelApi.URL)
+                .baseUrl(Constants.URL)
                 .client(OkHttpClient.Builder().build())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -67,13 +80,14 @@ class MainActivity : AppCompatActivity() {
                 .create(MarvelApi::class.java)
 
         showLoading()
-        api.listCharacters("1", "eb95459cac0b6177473decbeb608a839", "1ae5d2e78ffa4682eb728f01a6c0c4f5")
+        api.listCharacters(Constants.TS, Constants.API_KEY, Constants.HASH_KEY, Constants.LIMIT, skip.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { response ->
-                    mCharacters = response.data!!.characters
+                    mCharacters.addAll(response.data!!.characters)
                     mAdapter.setCharacters(mCharacters)
                     hideLoading()
+                    skip += 15
                 }
     }
 

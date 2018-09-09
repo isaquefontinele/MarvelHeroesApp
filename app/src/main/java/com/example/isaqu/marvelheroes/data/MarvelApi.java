@@ -16,5 +16,8 @@ public interface MarvelApi {
     Observable<CharacterListResponse> listCharacters(
             @Query("ts") String ts,
             @Query("apikey") String apiKey,
-            @Query("hash") String hash);
+            @Query("hash") String hash,
+            @Query("limit") String limit,
+            @Query("offset") String offset);
+
 }
