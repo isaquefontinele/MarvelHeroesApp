@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".activities.CharacterDetailActivity"
-            android:label="Character Details" />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

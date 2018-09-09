@@ -1,21 +1,20 @@
 package com.example.isaqu.marvelheroes.activities
 
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.view.MenuItem
 import com.example.isaqu.marvelheroes.R
 import com.example.isaqu.marvelheroes.model.Character
 import com.example.isaqu.marvelheroes.utils.Constants
 import com.example.isaqu.marvelheroes.view.CharacterDetailsFragment
 
-class CharacterDetailActivity : BaseActivity() {
+class CharacterDetailActivity : AppCompatActivity() {
 
-    private lateinit var instanceState: Bundle
     private lateinit var mCharacter: Character
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        instanceState = savedInstanceState!!
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character_details)
         val toolbar = findViewById<Toolbar>(R.id.detail_toolbar)
         setSupportActionBar(toolbar)
@@ -38,5 +37,13 @@ class CharacterDetailActivity : BaseActivity() {
                     .add(R.id.character_detail_container, fragment)
                     .commit()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        if (id == android.R.id.home) {
+            onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -3,6 +3,7 @@ package com.example.isaqu.marvelheroes.activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
@@ -19,7 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.Serializable
 import java.util.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var api: MarvelApi
@@ -38,11 +39,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupSearchBar() {
+        //TODO
     }
 
 
     private fun setupFields() {
-        mCharacters = ArrayList<Character>()
+        mCharacters = ArrayList()
         progressDialog = ProgressDialog(this)
         mAdapter = CharactersAdapter(mCharacters) {
             //OnClick on card
@@ -53,17 +55,6 @@ class MainActivity : BaseActivity() {
 
         mRecyclerView = findViewById(R.id.recyclerView)
         mRecyclerView.adapter = mAdapter
-
-//        mRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                super.onScrollStateChanged(recyclerView, newState)
-//                if (!isLoading()) {
-//                    if (!recyclerView.canScrollVertically(1)) {
-//                        loadCharacters()
-//                    }
-//                }
-//            }
-//        })
     }
 
     private fun loadCharacters() {
@@ -75,12 +66,14 @@ class MainActivity : BaseActivity() {
                 .build()
                 .create(MarvelApi::class.java)
 
+        showLoading()
         api.listCharacters("1", "eb95459cac0b6177473decbeb608a839", "1ae5d2e78ffa4682eb728f01a6c0c4f5")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { response ->
                     mCharacters = response.data!!.characters
                     mAdapter.setCharacters(mCharacters)
+                    hideLoading()
                 }
     }
 
