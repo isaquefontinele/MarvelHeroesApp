@@ -64,7 +64,7 @@ class CharacterDetailsFragment : Fragment() {
 
         if (mCharacter != null) {
             Picasso.with(context).load(Utils.getImagePath(mCharacter.thumbnail!!, 2)).placeholder(R.drawable.marvel).into(moviePosterHeader)
-
+            appBarLayout.title = mCharacter.name
         }
     }
 }

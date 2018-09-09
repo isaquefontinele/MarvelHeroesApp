@@ -20,4 +20,12 @@ public interface MarvelApi {
             @Query("limit") String limit,
             @Query("offset") String offset);
 
+    @GET("/v1/public/characters?orderBy=name")
+    Observable<CharacterListResponse> listCharactersByName(
+            @Query("ts") String ts,
+            @Query("apikey") String apiKey,
+            @Query("hash") String hash,
+            @Query("limit") String limit,
+            @Query("offset") String offset,
+            @Query("nameStartsWith") String query);
 }
